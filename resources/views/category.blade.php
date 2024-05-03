@@ -21,6 +21,11 @@
                         <hr>
                         <div class="card-description text-secondary">{{ $product->description }}</div>
                         <button class="btn btn-outline-success w-sm-25 w-50 my-3">В корзину</button>
+                        <div class="quantity-container d-flex d-none">
+                            <button class="decrement btn btn-success">-</button>
+                            <span class="quantity btn btn-success">0</span>
+                            <button class="increment btn btn-success">+</button>
+                        </div>
                     </a>
                 @endforeach 
                 {{-- <x-card/>

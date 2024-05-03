@@ -45,9 +45,6 @@
                     @foreach ($categories as $category)
                       <li><a class="dropdown-item" href="{{ route('category', ['slug' => $category->slug]) }}">{{ $category->name }}</a></li>
                     @endforeach
-                    {{-- <li><a class="dropdown-item" href="{{ route('category', ['category' => 'Овощи']) }}">Овощи</a></li>
-                    <li><a class="dropdown-item" href="{{ route('category', ['category' => 'Фрукты']) }}">Фрукты</a></li>
-                    <li><a class="dropdown-item" href="{{ route('category', ['category' => 'Растительные масла']) }}">Растительные масла</a></li> --}}
                   </ul>
                 </li>
               </ul>
@@ -65,8 +62,8 @@
         </h2>
     </div>
     <div class="right-block d-flex align-items-center">
-        <form class="d-none d-lg-block col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search" class="form-control" placeholder="Поиск..." aria-label="Поиск">
+        <form action="{{ route('search') }}" class="d-none d-lg-block col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input type="search" class="form-control" placeholder="Поиск..." aria-label="Поиск" name="q" >
         </form>
         @if (auth()->check())
             <x-acc-btn :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();"/>

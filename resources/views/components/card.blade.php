@@ -7,4 +7,9 @@
     <hr>
     <div class="card-description text-secondary">{{ $product->description }}</div>
     <button class="btn btn-outline-success w-sm-25 w-50 my-3">В корзину</button>
+    <div class="quantity-container">
+        <div class="decrement"></div>
+        <span class="quantity"></span>
+        <div class="increment"></div>
+    </div>
 </a>

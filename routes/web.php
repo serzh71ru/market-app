@@ -18,6 +18,8 @@ Route::get('/', function () {
 }) ->name('home');
 
 Route::get('/about', [ProfileController::class, 'about'])->name('about');
+Route::get('/search', [ProductController::class, 'search'])->name('search');
+Route::get('/promotion', [PromoteController::class, 'show'])->name('promote');
 
 Route::get('/login', function () {
     return view('auth.login');
