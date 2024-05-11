@@ -71,9 +71,9 @@
           <a href="{{ route('login') }}" class="btn btn-outline-primary me-2" type="submit">Вход</a>
           <a href="{{ route('register') }}" class="btn btn-outline-primary" type="submit">Регистрация</a>
         @endif
-        <div class="cart ms-3">
+        <a href="{{ route('cart') }}" class="cart ms-3">
             <img src="{{ asset('images/cart.png') }}" alt="cart">
-            <span class="cart-count">12</span>
-        </div>
+            <span class="cart-count">0</span>
+        </a>
     </div>
 </div>

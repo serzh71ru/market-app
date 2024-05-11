@@ -129,10 +129,23 @@
 .card-img {
     height: 100%;
 }
+.cart-card-img {
+    min-width: 250px;
+    max-width: none;
+}
 
 .product-img {
     max-height: 500px;
     width: 100%;
     object-fit: cover;
     object-position: center;
+}
+
+@media screen and (min-width: 767px) {
+    .cart-card-img {
+        max-height: 180px;
+        max-width: 250px;
+        min-width: 250px;
+        object-fit: cover;
+    }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Product;
@@ -37,22 +38,22 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/category/{slug}', function ($slug) {
-    $category = Category::where('slug', $slug)->firstOrFail();
-    $products = $category->products;
-    $categoryName = $category->name;
-
-    return view('category', ['products' => $products, 'categoryName' => $categoryName]);
-})->name('category');
+Route::get('/category/{slug}', [CategoryController::class, 'showProducts'])->name('category');
 
 Route::get('/product/{slug}', function ($slug) {
     $product = Product::where('slug', $slug)->firstOrFail();
     return view('product', ['product' => $product]);
 })->name('product');
 
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+// Route::get('/cart', function () {
+//     return view('cart');
+// })->name('cart');
+Route::get('/cart', [CartController::class,'getBasket'])->name('cart');
+Route::post('/setsession', [CartController::class,'setSession'])->name('set');
+Route::get('/getsession', [CartController::class,'getsession'])->name('get');
+Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class,'update'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class,'remove'])->name('cart.remove');
 
 
 
