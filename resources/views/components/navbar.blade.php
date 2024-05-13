@@ -2,21 +2,16 @@
     <nav class="d-none d-lg-inline-flex mt-2 mt-md-0 justify-content-center">
         <a class=" py-2 link-body-emphasis text-decoration-none nav-link"   href="{{ route('home') }}" >Главная</a>
         <a class=" py-2 link-body-emphasis text-decoration-none nav-link" href="{{ route('about') }}">Контакты</a>
+        <a class=" py-2 link-body-emphasis text-decoration-none nav-link" href="{{ route('promote') }}">Акции</a>
         <div class="dropdown py-2">
             <a class="  link-body-emphasis text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Категории товаров
             </a>
           
             <ul class="dropdown-menu">
-                {{-- @foreach ($categories as $category)
-                  <li><a class="dropdown-item" href="{{ route('category', ['my_category' => $category]) }}">{{ $category->name }}</a></li>
-                @endforeach --}}
                 @foreach ($categories as $category)
                   <li><a class="dropdown-item" href="{{ route('category', ['slug' => $category->slug]) }}">{{ $category->name }}</a></li>
                 @endforeach
-                
-                {{-- <li><a class="dropdown-item" href="{{ route('category', ['category' => 'Фрукты']) }}">Фрукты</a></li>
-                <li><a class="dropdown-item" href="{{ route('category', ['category' => 'Растительные масла']) }}">Растительные масла</a></li> --}}
             </ul>
         </div>
     </nav>
@@ -30,7 +25,7 @@
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 mb-3">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Главная</a>
                 </li>
@@ -48,8 +43,8 @@
                   </ul>
                 </li>
               </ul>
-              <form class="d-flex">
-                <input class="form-control me-2" type="Поиск" placeholder="Поиск" aria-label="Поиск">
+              <form action="{{ route('search') }}" class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск" name="q">
                 <button class="btn btn-outline-success" type="submit">Поиск</button>
               </form>
             </div>
@@ -73,7 +68,7 @@
         @endif
         <a href="{{ route('cart') }}" class="cart ms-3">
             <img src="{{ asset('images/cart.png') }}" alt="cart">
-            <span class="cart-count">0</span>
+            <span class="cart-count d-none">0</span>
         </a>
     </div>
 </div>

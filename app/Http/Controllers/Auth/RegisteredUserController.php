@@ -35,11 +35,6 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'phone' => ['required', 'string', 'min:10', 'max:10', 'regex:/^9\d{9}$/', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        // ], [
-        //     'email.required' => 'Введите ваш адрес электронной почты!',
-        //     'email.email' => "Вы ввели неверный e-mail.",
-        //     'email.unique:.User::class' => "Данный e-mail уже зарегистрирован.",
-        //     'name.required' => "Введите ваше имя.",
         ]);
 
         $user = User::create([

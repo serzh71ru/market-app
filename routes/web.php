@@ -2,15 +2,18 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PromoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
-
+Route::post('/order', [OrderController::class, 'sendOrder'])->name('order');
 // Route::get('/', 'Controller@home') ->name('home');
 // Route::get('/about', 'Controller@about') ->name('about');
 
@@ -40,10 +43,7 @@ require __DIR__.'/auth.php';
 
 Route::get('/category/{slug}', [CategoryController::class, 'showProducts'])->name('category');
 
-Route::get('/product/{slug}', function ($slug) {
-    $product = Product::where('slug', $slug)->firstOrFail();
-    return view('product', ['product' => $product]);
-})->name('product');
+Route::get('/product/{slug}', [ProductController::class, 'index'])->name('product');
 
 // Route::get('/cart', function () {
 //     return view('cart');
