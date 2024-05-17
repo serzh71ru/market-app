@@ -2,7 +2,6 @@
 
 
 namespace App\Http\Controllers;
-// session_start();
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -12,7 +11,6 @@ class CartController extends Controller
     public function setSession(Request $request){ 
         $basket = $request->basket;
         $request->session()->put('basket', $basket);
-        // return $basket;
     }
 
     public function getsession(Request $request)
@@ -57,9 +55,6 @@ class CartController extends Controller
         $basket = session()->get('basket');
         $keys = [];
         $values = [];
-        // $user = $request->user();
-        // $addresses = $user->addresses;
-        // dd($basket);
         if($basket != NULL){
             foreach($basket as $product){
                 foreach($product as $key => $value){

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('user_address_info')->nullable();
             $table->text('comment')->nullable();
             $table->text('products');
+            $table->integer('sum');
             $table->timestamps();
         });
     }

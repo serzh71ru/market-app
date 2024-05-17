@@ -15,5 +15,6 @@ class Order extends Model
         'user_address_info',
         'comment',
         'products',
+        'sum',
     ];
 }

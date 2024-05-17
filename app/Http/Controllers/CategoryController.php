@@ -7,14 +7,6 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-
-    // public function create_category() {
-    //     $category = new Category();
-    //     $category->name = $request->input(key: 'name');
-    //     $category->slug = $request->input(key: 'slug');
-    //     $category->save();
-    // }
-
     public function category($slug){
         $category = Category::where('slug', $slug)->firstOrFail();
         $products = $category->products;

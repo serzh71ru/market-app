@@ -12,7 +12,6 @@ class ProductController extends Controller
     public function index($slug) {
         $product = Product::where('slug', $slug)->firstOrFail();
         $basket = session()->get('basket');
-        // dd($basket);
         return view('product', ['product' => $product, 'basket' => $basket]);
     }
 

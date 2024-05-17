@@ -32,6 +32,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{{ route('about') }}">Контакты</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ route('promote') }}">Акции</a>
+                </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Категории

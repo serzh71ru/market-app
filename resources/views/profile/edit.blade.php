@@ -1,4 +1,3 @@
-{{-- <x-app-layout> --}}
 <x-head>
     <x-slot:title>
         Профиль
@@ -50,24 +49,8 @@
                 token: "b1fd6c9aee617244fe2e0e93a23ef9d28c72613d",
                 type: "ADDRESS",
                 onSelect: function(suggestion) {
-                    // console.log(suggestion);
                 }
             });
-            // $(".address-input").each(function() {
-            //     if ($(this).is(':disabled')) {
-            //         $(this).next().on("click" function() {
-            //             $(this).removeAttr('disabled');
-            //             $(this).suggestions({
-            //             token: "b1fd6c9aee617244fe2e0e93a23ef9d28c72613d",
-            //             type: "ADDRESS",
-            //             onSelect: function(suggestion) {
-            //                 // console.log(suggestion);
-            //             }
-            //         });
-            //         })
-            //     }
-            // });
         </script>
         <x-scripts/>
     </body>
-{{-- </x-app-layout> --}}

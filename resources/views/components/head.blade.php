@@ -1,6 +1,3 @@
-{{-- @php
-    session_start();
-@endphp --}}
 <!DOCTYPE html>
 <html lang="ru">
 <head>

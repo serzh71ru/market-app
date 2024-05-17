@@ -8,20 +8,26 @@ async function getData() {
     cards.forEach(card => {
         const id = card.dataset.id;
         const price = card.querySelector('.card-price').textContent;
-        let quantity = card.querySelector('.quantity').textContent;
+        let quantity = 0;
+        if(card.querySelector('#quantity') != null){
+            quantity = card.querySelector('#quantity').value;
+        }
         countProduct = countProduct + Number(quantity);
-        let totalCard = price * quantity;
-        if(quantity == ''){
-            card.querySelector('.quantity').textContent = 0;
-            quantity = 0;
-        } else if(card.querySelector('.quantity').textContent > 0) {
+        let totalCard = 0;
+        if(card.querySelector('#unit_value').value == 0.5){
+            totalCard = price * quantity * 0.5;
+        } else{totalCard = price * quantity;}
+        if(quantity == '' || quantity == 0){
+            card.querySelector('.quantity').innerHTML = `
+                <input type="hidden" id="quantity" value="0">
+                <span class="unit">0</span>
+            `;
+        } else if(card.querySelector('#quantity').value > 0) {
             card.querySelector('.quantity-container').classList.remove('d-none');
             card.querySelector('.quantity-container').previousElementSibling.classList.add('d-none');
         }
-        // console.log(quantity);
         data.push({id, price, quantity});
         sum = sum + totalCard;
-        document.querySelector('.cart-count').textContent = countProduct;
         sumBlock.textContent = sum;
     });
     return data;
@@ -60,7 +66,6 @@ function plus(id, arr) {
             arr.push({[id]: 1})
         }
     }
-    console.log(arr)
 }
 
 function minus(id, arr) {
@@ -79,42 +84,43 @@ function minus(id, arr) {
 }
 
 let data = document.addEventListener('DOMContentLoaded', () => {getData();})
-// console.log(data);
 
 const cards = document.querySelectorAll('.card');
 
-// async function renderQuantityCard(){
-//     cards.forEach(card => {
-//         let quantity = card.querySelector('.quantity');
-
-//     })
-// }
-
-// let basket = localStorage.getItem('basket')
-
-
-
 cards.forEach(card => {
-    let cardSum = Number(card.querySelector('.card-price').innerText) * Number(card.querySelector('.quantity').innerText);
+    let cardSum = 0;
+    if(card.querySelector('#quantity') != null){
+        cardSum = Number(card.querySelector('.card-price').innerText) * Number(card.querySelector('#quantity').value);
+    }
     const cardQuant = card.querySelector('.card-quantity');
-    cardQuant.textContent = cardSum ;
+    if(card.querySelector('#unit_value').value == 0.5){
+        cardQuant.textContent = cardSum * 0.5;
+    } else{cardQuant.textContent = cardSum}
     card.addEventListener('click' , (event) => {
-        const price = Number(card.querySelector('.card-price').innerText);
-        // console.log(price);
+        let price = Number(card.querySelector('.card-price').innerText);
         let targ = event.target
         if (targ.classList.contains('increment') || targ.classList.contains('add-cart')) {
             if(targ.classList.contains('add-cart')){
                 targ.classList.add('d-none');
                 targ.nextElementSibling.classList.remove('d-none');
-                targ.nextElementSibling.querySelector('.quantity').textContent++;
+                card.querySelector('#quantity').value++;
+                card.querySelector('.unit').textContent = Number(card.querySelector('#quantity').value) * Number(card.querySelector('#unit_value').value) + card.querySelector('#unit_name').value;
                 document.querySelector('.cart-count').textContent++;
-                cardQuant.textContent = Number(cardQuant.textContent) + Number(card.querySelector('.card-price').innerText)
+                if(card.querySelector('#unit_value').value == 0.5){
+                    cardQuant.textContent = Number(cardQuant.textContent) + (Number(card.querySelector('.card-price').innerText) * 0.5);
+                } else{cardQuant.textContent = Number(cardQuant.textContent) + Number(card.querySelector('.card-price').innerText)}
             } else if(targ.classList.contains('increment')){
-                targ.previousElementSibling.textContent++;
+                card.querySelector('#quantity').value++;
+                card.querySelector('.unit').textContent = Number(card.querySelector('#quantity').value) * Number(card.querySelector('#unit_value').value) + card.querySelector('#unit_name').value;
                 document.querySelector('.cart-count').textContent++;
-                cardQuant.textContent = Number(cardQuant.textContent) + Number(card.querySelector('.card-price').innerText);
+                if(card.querySelector('#unit_value').value == 0.5){
+                    cardQuant.textContent = Number(cardQuant.textContent) + (Number(card.querySelector('.card-price').innerText) * 0.5);
+                } else{cardQuant.textContent = Number(cardQuant.textContent) + Number(card.querySelector('.card-price').innerText)}
             }
-            sum = sum + price;
+            if(card.querySelector('#unit_value').value == 0.5){
+                sum = sum + (price * 0.5);
+            } else{sum = sum + price}
+            
             sumBlock.textContent = sum;
             plus(targ.dataset.id, allBuy)
             $.ajax({
@@ -122,20 +128,24 @@ cards.forEach(card => {
                 url: '/setsession',
                 data: {'_token': $('meta[name="csrf-token"]').attr('content'), basket: allBuy }
             })
-            localStorage.setItem('basket', JSON.stringify(allBuy))  
         } else if (targ.classList.contains('decrement')) {
-            targ.nextElementSibling.textContent--;
+            card.querySelector('#quantity').value--;
+            card.querySelector('.unit').textContent = Number(card.querySelector('#quantity').value) * Number(card.querySelector('#unit_value').value) + card.querySelector('#unit_name').value;
             document.querySelector('.cart-count').textContent--;
-            cardQuant.textContent = Number(cardQuant.textContent) - Number(card.querySelector('.card-price').innerText);
-            if(targ.nextElementSibling.innerText < 1){
+            if(card.querySelector('#unit_value').value == 0.5){
+                cardQuant.textContent = Number(cardQuant.textContent) - (Number(card.querySelector('.card-price').innerText) * 0.5);
+            } else{cardQuant.textContent = Number(cardQuant.textContent) - Number(card.querySelector('.card-price').innerText)}
+            if(card.querySelector('#quantity').value < 1){
                 if(document.title == 'Корзина'){
                     card.remove();
                 }
-                targ.nextElementSibling.textContent = 0;
+                card.querySelector('#quantity').value = 0;
                 targ.parentElement.classList.add('d-none');
                 targ.parentElement.previousElementSibling.classList.remove('d-none');
             }
-            sum = sum - price;
+            if(card.querySelector('#unit_value').value == 0.5){
+                sum = sum - (price * 0.5);
+            } else{sum = sum - price}
             sumBlock.textContent = sum;
             if(sumBlock.innerText == 0 && document.title == 'Корзина'){
                 document.querySelector('.form').remove();

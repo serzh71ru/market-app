@@ -3,7 +3,7 @@
         <div class="col-xl-4 col-md-6 col-12 text-center">
             <h5 class="text-secondary">О КОМПАНИИ</h5>
             <ul class="list-unstyled text-small">
-                <li class="mb-1"><a class="link-dark text-decoration-none" href="#">Акции</a></li>
+                <li class="mb-1"><a class="link-dark text-decoration-none" href="{{ route('promote') }}">Акции</a></li>
                 <li class="mb-1"><a class="link-dark text-decoration-none" href="#">Доставка и оплата</a></li>
                 <li class="mb-1"><a class="link-dark text-decoration-none" href="#">Вакансии</a></li>
             </ul>

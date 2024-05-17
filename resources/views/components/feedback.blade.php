@@ -1,4 +1,4 @@
-<form action="/about/submit" method="POST" class="feedback mb-5">
+<form action="sendFeedback" method="POST" class="feedback mb-5">
     @csrf
     <div class="form-group">
         <label for="name" class="mt-2">Как вас зовут?</label>

@@ -17,5 +17,6 @@ class UnregOrder extends Model
         'user_address_info',
         'comment',
         'products',
+        'sum',
     ];
 }
