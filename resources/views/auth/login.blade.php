@@ -46,4 +46,5 @@
             </x-primary-button>
         </div>
     </form>
+    <p>Впервые у нас? <a href="{{ route('register') }}" style="color:blue">Зарегистрируйтесь</a>!</p>
 </x-guest-layout>

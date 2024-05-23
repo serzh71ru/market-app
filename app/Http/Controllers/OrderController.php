@@ -66,4 +66,23 @@ class OrderController extends Controller
         return view('order');
         
     } 
+
+    public function ordersStory(Request $request){
+        $orders = Order::where('user_id', auth()->user()->id)->orderByDesc('created_at')->get();
+        foreach ($orders as $order){
+            $order->products = (array) json_decode($order->products);
+            $productModels = Product::find(array_keys($order->products));
+            $products = [];
+            for($i = 0; $i < count($productModels); $i++){
+                $keys = array_keys($order->products);
+                $values = array_values($order->products);
+                $productModels[$i]->quantity = $values[$i];
+                $products[] = $productModels[$i];
+            }
+            $order->products = $products;
+        }
+        session(['orders' => $orders]);
+        // dd(session()->get('orders'));
+        return view('orders', ['orders' => $orders]);
+    }
 }

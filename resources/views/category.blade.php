@@ -15,8 +15,8 @@
                     $sum = 0;
                 @endphp
                 @foreach ($products as $product)
-                    <div class="card border-0 d-flex flex-column text-decoration-none col-12 col-md-6 col-xl-4 my-2" data-id='{{$product->id}}' href="{{ route('product', ['slug' => $product->slug]) }}">
-                        <a href="{{ route('product', ['slug' => $product->slug]) }}" class="card-img">
+                    <div class="card border-0 d-flex flex-column text-decoration-none col-12 col-md-6 col-xl-4 my-2" data-id='{{$product->id}}' href="{{ route('product', ['slug' => str_slug($product->name)]) }}">
+                        <a href="{{ route('product', ['slug' => str_slug($product->name)]) }}" class="card-img">
                             <img src="{{ asset("storage/$product->image") }}" alt="{{ $product->name }}" class="card-img">
                         </a>
                         <div class="d-flex justify-content-between  my-2">

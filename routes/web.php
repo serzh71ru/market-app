@@ -15,6 +15,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 
 Route::post('/order', [OrderController::class, 'sendOrder'])->name('order');
+Route::get('/orders', [OrderController::class, 'ordersStory'])->name('order_story');
 
 Route::get('/', function () {
     return view('home');
@@ -44,7 +45,8 @@ Route::get('/category/{slug}', [CategoryController::class, 'showProducts'])->nam
 
 Route::get('/product/{slug}', [ProductController::class, 'index'])->name('product');
 
-Route::get('/cart', [CartController::class,'getBasket'])->name('cart');
+Route::get('/basket', [CartController::class,'getBasket'])->name('cart');
+Route::get('/basket/{id}', [CartController::class,'repeatOrder'])->name('repeatOrder');
 Route::post('/setsession', [CartController::class,'setSession'])->name('set');
 Route::get('/getsession', [CartController::class,'getsession'])->name('get');
 Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');

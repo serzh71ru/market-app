@@ -41,7 +41,7 @@
             <div class="categories container">
                 <div class="row">
                     @foreach ($categories as $category)
-                        <a href="{{ route('category', ['slug' => $category->slug]) }}" class="col-12 col-md-6 col-xl-4 my-2 category-item">
+                        <a href="{{ route('category', ['slug' => str_slug($category->name)]) }}" class="col-12 col-md-6 col-xl-4 my-2 category-item">
                             <h3 class="category-item-title">{{ $category->name }}</h3>
                             <img class="category-item-img" src="{{ asset("storage/$category->image") }}" alt="{{ $category->name }}">
                         </a>

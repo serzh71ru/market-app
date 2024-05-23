@@ -1,5 +1,5 @@
 <footer class="p-5">
-    <div class="row mx-5 justify-content-around">
+    <div class="row mx-0 mx-lg-5 justify-content-around">
         <div class="col-xl-4 col-md-6 col-12 text-center">
             <h5 class="text-secondary">О КОМПАНИИ</h5>
             <ul class="list-unstyled text-small">
@@ -8,7 +8,7 @@
                 <li class="mb-1"><a class="link-dark text-decoration-none" href="#">Вакансии</a></li>
             </ul>
         </div>
-        <div class="col-xl-4 col-md-6 col-12 text-center">
+        <div class="col-xl-4 col-md-6 col-12 text-center my-5 my-sm-0">
             <h5 class="text-secondary">КОНТАКТЫ</h5>
             <ul class="list-unstyled text-small">
                 <li class="mb-1"><a class="link-dark text-decoration-none" href="#">+7 (1234) 567-890</a></li>

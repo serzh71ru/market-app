@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Jenssegers\Date\Date;
 use App\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->share('categories', Category::all());
-        // view()->share('category', Category::find($id));
+        Date::setlocale(config('app.locale'));
     }
 }

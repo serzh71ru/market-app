@@ -18,4 +18,12 @@ class Product extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            $product->slug = str_slug($product->name);
+        });
+    }
 }

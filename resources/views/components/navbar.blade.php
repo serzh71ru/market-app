@@ -10,7 +10,7 @@
           
             <ul class="dropdown-menu">
                 @foreach ($categories as $category)
-                  <li><a class="dropdown-item" href="{{ route('category', ['slug' => $category->slug]) }}">{{ $category->name }}</a></li>
+                  <li><a class="dropdown-item" href="{{ route('category', ['slug' => str_slug($category->name)]) }}">{{ $category->name }}</a></li>
                 @endforeach
             </ul>
         </div>
@@ -41,7 +41,7 @@
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
                     @foreach ($categories as $category)
-                      <li><a class="dropdown-item" href="{{ route('category', ['slug' => $category->slug]) }}">{{ $category->name }}</a></li>
+                      <li><a class="dropdown-item" href="{{ route('category', ['slug' => str_slug($category->name)]) }}">{{ $category->name }}</a></li>
                     @endforeach
                   </ul>
                 </li>
@@ -56,7 +56,7 @@
     </nav>
     <div class="logo d-none d-sm-block">
         <h2>
-            <a href="#" class="link-body-emphasis text-decoration-none">LOGO</a>
+            <a href="{{ route('home') }}" class="link-body-emphasis text-decoration-none me-5 pe-4">LOGO</a>
         </h2>
     </div>
     <div class="right-block d-flex align-items-center">
@@ -66,8 +66,7 @@
         @if (auth()->check())
             <x-acc-btn :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();"/>
         @else
-          <a href="{{ route('login') }}" class="btn btn-outline-primary me-2" type="submit">Вход</a>
-          <a href="{{ route('register') }}" class="btn btn-outline-primary" type="submit">Регистрация</a>
+          <a href="{{ route('login') }}" class="btn btn-outline-primary me-2" type="submit">Войти</a>
         @endif
         <a href="{{ route('cart') }}" class="cart ms-3">
             <img src="{{ asset('images/cart.png') }}" alt="cart">

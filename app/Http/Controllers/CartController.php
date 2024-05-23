@@ -75,4 +75,22 @@ class CartController extends Controller
             return view('cart');
         }        
     }
+
+    public function repeatOrder($id){
+        $orders = session()->get('orders');
+        foreach($orders as $item){
+            if($item->id == $id){
+                $order = $item;
+            }
+        }
+        $basket = session()->get('basket', []);
+        $products = [];
+        foreach($order->products as $index => $product){
+            $basket[$index] = [$product->id => $product->quantity];
+        }
+        $user = auth()->user();
+        session()->put('basket', $basket);
+
+        return view('repeatOrder', ['order' => $order]);
+    }
 }

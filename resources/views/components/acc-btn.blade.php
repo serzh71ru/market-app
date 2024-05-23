@@ -4,7 +4,7 @@
     </a>
     <ul class="dropdown-menu text-small" style="">
     <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Профиль</a></li>
-    <li><a class="dropdown-item" href="#">История заказов</a></li>
+    <li><a class="dropdown-item" href="{{ route('order_story') }}">История заказов</a></li>
     <li><a class="dropdown-item" href="{{ route('logout') }}">Выход</a></li>                          
     </ul>
 </div>

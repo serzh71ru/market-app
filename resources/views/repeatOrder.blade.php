@@ -7,13 +7,17 @@
     <header>
         <x-navbar/>
     </header>
+    @php
+        $user = auth()->user();
+        $addresses = $user->addresses;
+    @endphp
     <main class="cart-main pt-5">
         <div class="container"></div>
         <div class="form">
             <form action="/order" method="POST" class="order-form mb-5 container">
             @csrf
                 <div class="container">
-                    @if (isset($basket))
+                     {{-- @if (isset($basket)) --}}
                             <div class=" w-100 d-md-flex d-none flex-md-row col-12  justify-content-between align-items-center text-secondary">
                                 <div style="width:250px"><h6></h6></div>
                                 <h4 class="card-title me-5">Товар</h4>
@@ -27,7 +31,7 @@
                             @php
                                 $sum = 0;
                             @endphp
-                            @foreach ($products as $product)
+                            @foreach ($order->products as $product)
                                 <div class=" w-100 card border-0 d-block d-md-flex flex-md-row text-decoration-none col-12 col-md-3 col-xl-2 my-2 justify-content-between align-items-center" data-id='{{$product->id}}' href="{{ route('product', ['slug' => $product->slug]) }}">
                                     <img src="{{ asset("storage/$product->image") }}" alt="{{ $product->name }}" class="card-img cart-card-img w-sm-100">
                                     <h4 class="card-title">{{ $product->name }}</h4>
@@ -53,26 +57,26 @@
                                         <div class="quantity-container my-3 my-md-1 d-flex d-none justify-content-center mx-md-5">
                                             <div class="decrement btn btn-outline-success" data-id='{{$product->id}}'>-</div>
                                             <span class="quantity btn btn-outline-success mx-2">
-                                                @foreach ($basket as $item)
+                                                {{-- @foreach ($basket as $item)
                                                     @foreach ($item as $id => $quantity)
-                                                        @if ($id == $product->id)
+                                                        @if ($id == $product->id) --}}
                                                             @php
                                                                 if($product->unit->value == 0.5){
-                                                                    $cardSum = $product->price * $quantity * 0.5;
+                                                                    $cardSum = $product->price * $product->quantity * 0.5;
                                                                     $sum = $sum + $cardSum;
                                                                 } else{
-                                                                    $cardSum = $product->price * $quantity;
-                                                                    $sum = $sum + ($product->price * $quantity);
+                                                                    $cardSum = $product->price * $product->quantity;
+                                                                    $sum = $sum + ($product->price * $product->quantity);
                                                                 }
                                                                 
-                                                                $unit = $product->unit->value * $quantity . $product->unit->name;
+                                                                $unit = $product->unit->value * $product->quantity . $product->unit->name;
                                                             @endphp
-                                                            <input type="hidden" id="quantity" name="{{ $product->id }}" value="{{ $quantity }}">
+                                                            <input type="hidden" id="quantity" name="{{ $product->id }}" value="{{ $product->quantity }}">
                                                             <span class="unit">{{ $unit }}</span>
-                                                        @endif
+                                                        {{-- @endif
                                                         
                                                     @endforeach
-                                                @endforeach
+                                                @endforeach --}}
                                             </span>
                                             <div class="increment btn btn-outline-success" data-id='{{$product->id}}'>+</div>
                                         </div>
@@ -93,7 +97,7 @@
                             <hr>
                     {{-- </div> --}}
                 </div>
-            
+            {{-- @dd(auth()->user()) --}}
                 <div class="order mt-5 d-flex flex-column align-items-center">
                     <h3 class="mb-5">Оформление заказа</h3>
                         <div class="form-group w-100">
@@ -152,7 +156,7 @@
                             <div class="mt-2 d-flex align-items-center">
                                 <input type="radio" class="mt-1 toggl" name="address" value="random-address" onclick="toggleRequired(this)" @if ($user == NULL) checked @endif>
                                 <div class="w-100 ms-3">
-                                    <input type="text" class="form-control mt-1 w-100" name="address_val" id="address" @if (isset($addresses) && count($addresses) == 0 || $user == NULL)
+                                    <input type="text" class="form-control mt-1 w-100" name="address_val" id="address" @if (isset($addresses) && count($addresses) == 0)
                                         required
                                     @endif>
                                 </div>
@@ -172,14 +176,14 @@
                 </div>
             </form>
         </div>
-        @else
-            <div class="empty-cart border-2 rounded-3 py-3 px-3">
+        {{-- <!-- @else --> --}}
+            <!-- <div class="empty-cart border-2 rounded-3 py-3 px-3">
                 <div class="card-body d-flex justify-content-between">
                     <h3 class="card-title">Корзина пуста</h3>
                     <a href="{{ route('home') }}" class="btn btn-success">В каталог</a>
                 </div>
-            </div>
-        @endif 
+            </div> -->
+        {{-- <!-- @endif  --> --}}
     </main>
     <hr>
     <x-footer/>

@@ -10,8 +10,6 @@ class CategoryController extends Controller
     public function category($slug){
         $category = Category::where('slug', $slug)->firstOrFail();
         $products = $category->products;
-        
-        dd($basket);
         return view('category', ['products' => $products, 'basket' => $basket]);
     }
     public function showProducts($slug) {
