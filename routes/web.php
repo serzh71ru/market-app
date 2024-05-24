@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
@@ -17,9 +18,7 @@ use Illuminate\Http\Request;
 Route::post('/order', [OrderController::class, 'sendOrder'])->name('order');
 Route::get('/orders', [OrderController::class, 'ordersStory'])->name('order_story');
 
-Route::get('/', function () {
-    return view('home');
-}) ->name('home');
+Route::get('/', [BannerController::class, 'index'])->name('home');
 
 Route::get('/about', [ProfileController::class, 'about'])->name('about');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
@@ -42,6 +41,9 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/category/{slug}', [CategoryController::class, 'showProducts'])->name('category');
+Route::get('/delivery', function(){
+    return view('delivery');
+})->name('delivery');
 
 Route::get('/product/{slug}', [ProductController::class, 'index'])->name('product');
 

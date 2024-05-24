@@ -82,7 +82,6 @@ class OrderController extends Controller
             $order->products = $products;
         }
         session(['orders' => $orders]);
-        // dd(session()->get('orders'));
         return view('orders', ['orders' => $orders]);
     }
 }

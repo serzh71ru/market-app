@@ -4,7 +4,7 @@
             <h5 class="text-secondary">О КОМПАНИИ</h5>
             <ul class="list-unstyled text-small">
                 <li class="mb-1"><a class="link-dark text-decoration-none" href="{{ route('promote') }}">Акции</a></li>
-                <li class="mb-1"><a class="link-dark text-decoration-none" href="#">Доставка и оплата</a></li>
+                <li class="mb-1"><a class="link-dark text-decoration-none" href="{{ route('delivery') }}">Доставка и оплата</a></li>
                 <li class="mb-1"><a class="link-dark text-decoration-none" href="#">Вакансии</a></li>
             </ul>
         </div>
@@ -37,3 +37,4 @@
         </div>
     </div>
 </footer>
+<div class="copyright text-center p-3">© MARKET-APP. Все права защищены.</div>

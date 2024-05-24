@@ -9,20 +9,28 @@
             <x-navbar/>
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
                 <div class="carousel-indicators">
+                    @php
+                        $activeBanner = $banners[0];
+                        $slideNum = array_keys($banners->toArray());
+                    @endphp
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    @foreach ($slideNum as $item)
+                        @if ($item != 0)
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $item }}" aria-label="Slide {{ $item + 1 }}"></button>
+                        @endif
+                    @endforeach
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="images/vegetables.jpg" class="d-block w-100" alt="Овощи">
+                        <img src="{{ asset("storage/$activeBanner->image") }}" class="d-block w-100" alt="Овощи">
                     </div>
-                    <div class="carousel-item">
-                        <img src="images/fruits.jpg" class="d-block w-100" alt="Фрукты">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/oils.jpg" class="d-block w-100" alt="Растительные масла">
-                    </div>
+                    @foreach ($banners as $banner)
+                        @if ($banner != $activeBanner)
+                            <div class="carousel-item">
+                                <img src="{{ asset("storage/$banner->image") }}" class="d-block w-100" alt="Фрукты">
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -17,87 +17,77 @@
             <form action="/order" method="POST" class="order-form mb-5 container">
             @csrf
                 <div class="container">
-                     {{-- @if (isset($basket)) --}}
-                            <div class=" w-100 d-md-flex d-none flex-md-row col-12  justify-content-between align-items-center text-secondary">
-                                <div style="width:250px"><h6></h6></div>
-                                <h4 class="card-title me-5">Товар</h4>
-                                <h4 class="d-none d-lg-block"><span class="card-price me-3">Цена</span></h4>
-                                <div class="d-flex justify-content-between align-items-center  mx-lg-5">
-                                    <h4 class="mx-4">Количество</h4>
-                                    <h4>Сумма</h4>
+                    <div class=" w-100 d-md-flex d-none flex-md-row col-12  justify-content-between align-items-center text-secondary">
+                        <div style="width:250px"><h6></h6></div>
+                        <h4 class="card-title me-5">Товар</h4>
+                        <h4 class="d-none d-lg-block"><span class="card-price me-3">Цена</span></h4>
+                        <div class="d-flex justify-content-between align-items-center  mx-lg-5">
+                            <h4 class="mx-4">Количество</h4>
+                            <h4>Сумма</h4>
+                        </div>
+                    </div>
+                    <hr>
+                    @php
+                        $sum = 0;
+                    @endphp
+                    @foreach ($order->products as $product)
+                        <div class=" w-100 card border-0 d-block d-md-flex flex-md-row text-decoration-none col-12 col-md-3 col-xl-2 my-2 justify-content-between align-items-center" data-id='{{$product->id}}' href="{{ route('product', ['slug' => $product->slug]) }}">
+                            <img src="{{ asset("storage/$product->image") }}" alt="{{ $product->name }}" class="card-img cart-card-img w-sm-100">
+                            <h4 class="card-title">{{ $product->name }}</h4>
+                            <input type="hidden" id="unit_value" name="unitValue" value="{{ $product->unit->value }}">
+                            <input type="hidden" id="unit_name" name="unitName" value="{{ $product->unit->name }}">
+                            <h4 class="d-none d-lg-block"><span class="card-price ms-5">{{ $product->price }}</span> <span>Р</span><span>/
+                                @switch($product->unit->name)
+                                    @case('кг')
+                                        кг
+                                        @break
+                                    @case('г')
+                                        100г
+                                        @break
+                                    @case('шт')
+                                        шт
+                                        @break
+                                    @default
+                                        
+                                @endswitch        
+                            </span></h4>
+                            <div class="d-flex justify-content-between align-items-center  mx-lg-5">
+                                <div class="btn btn-outline-success w-sm-25 w-50 my-3 add-cart" data-id='{{$product->id}}'>В корзину</div>
+                                <div class="quantity-container my-3 my-md-1 d-flex d-none justify-content-center mx-md-5">
+                                    <div class="decrement btn btn-outline-success" data-id='{{$product->id}}'>-</div>
+                                    <span class="quantity btn btn-outline-success mx-2">
+                                        @php
+                                            if($product->unit->value == 0.5){
+                                                $cardSum = $product->price * $product->quantity * 0.5;
+                                                $sum = $sum + $cardSum;
+                                            } else{
+                                                $cardSum = $product->price * $product->quantity;
+                                                $sum = $sum + ($product->price * $product->quantity);
+                                            }
+                                            
+                                            $unit = $product->unit->value * $product->quantity . $product->unit->name;
+                                        @endphp
+                                        <input type="hidden" id="quantity" name="{{ $product->id }}" value="{{ $product->quantity }}">
+                                        <span class="unit">{{ $unit }}</span>
+                                    </span>
+                                    <div class="increment btn btn-outline-success" data-id='{{$product->id}}'>+</div>
                                 </div>
+                                <h4><span class="card-quantity">{{ $cardSum }}</span>Р</h4>
                             </div>
-                            <hr>
-                            @php
-                                $sum = 0;
-                            @endphp
-                            @foreach ($order->products as $product)
-                                <div class=" w-100 card border-0 d-block d-md-flex flex-md-row text-decoration-none col-12 col-md-3 col-xl-2 my-2 justify-content-between align-items-center" data-id='{{$product->id}}' href="{{ route('product', ['slug' => $product->slug]) }}">
-                                    <img src="{{ asset("storage/$product->image") }}" alt="{{ $product->name }}" class="card-img cart-card-img w-sm-100">
-                                    <h4 class="card-title">{{ $product->name }}</h4>
-                                    <input type="hidden" id="unit_value" name="unitValue" value="{{ $product->unit->value }}">
-                                    <input type="hidden" id="unit_name" name="unitName" value="{{ $product->unit->name }}">
-                                    <h4 class="d-none d-lg-block"><span class="card-price ms-5">{{ $product->price }}</span> <span>Р</span><span>/
-                                        @switch($product->unit->name)
-                                            @case('кг')
-                                                кг
-                                                @break
-                                            @case('г')
-                                                100г
-                                                @break
-                                            @case('шт')
-                                                шт
-                                                @break
-                                            @default
-                                                
-                                        @endswitch        
-                                    </span></h4>
-                                    <div class="d-flex justify-content-between align-items-center  mx-lg-5">
-                                        <div class="btn btn-outline-success w-sm-25 w-50 my-3 add-cart" data-id='{{$product->id}}'>В корзину</div>
-                                        <div class="quantity-container my-3 my-md-1 d-flex d-none justify-content-center mx-md-5">
-                                            <div class="decrement btn btn-outline-success" data-id='{{$product->id}}'>-</div>
-                                            <span class="quantity btn btn-outline-success mx-2">
-                                                {{-- @foreach ($basket as $item)
-                                                    @foreach ($item as $id => $quantity)
-                                                        @if ($id == $product->id) --}}
-                                                            @php
-                                                                if($product->unit->value == 0.5){
-                                                                    $cardSum = $product->price * $product->quantity * 0.5;
-                                                                    $sum = $sum + $cardSum;
-                                                                } else{
-                                                                    $cardSum = $product->price * $product->quantity;
-                                                                    $sum = $sum + ($product->price * $product->quantity);
-                                                                }
-                                                                
-                                                                $unit = $product->unit->value * $product->quantity . $product->unit->name;
-                                                            @endphp
-                                                            <input type="hidden" id="quantity" name="{{ $product->id }}" value="{{ $product->quantity }}">
-                                                            <span class="unit">{{ $unit }}</span>
-                                                        {{-- @endif
-                                                        
-                                                    @endforeach
-                                                @endforeach --}}
-                                            </span>
-                                            <div class="increment btn btn-outline-success" data-id='{{$product->id}}'>+</div>
-                                        </div>
-                                        <h4><span class="card-quantity">{{ $cardSum }}</span>Р</h4>
-                                    </div>
-                                </div>
-                                <hr class="d-md-none">
-                            @endforeach
-                            <hr>
-                            <div class="total d-flex justify-content-between">
-                                <h2>Итого:</h2>
-                                <h2>
-                                    <span class="cart-total">{{ $sum }}</span>
-                                    <input type="hidden" name="sum" value="{{ $sum }}">
-                                    <span>Р</span>
-                                </h2>
-                            </div>
-                            <hr>
-                    {{-- </div> --}}
+                        </div>
+                        <hr class="d-md-none">
+                    @endforeach
+                    <hr>
+                    <div class="total d-flex justify-content-between">
+                        <h2>Итого:</h2>
+                        <h2>
+                            <span class="cart-total">{{ $sum }}</span>
+                            <input type="hidden" name="sum" value="{{ $sum }}">
+                            <span>Р</span>
+                        </h2>
+                    </div>
+                    <hr>
                 </div>
-            {{-- @dd(auth()->user()) --}}
                 <div class="order mt-5 d-flex flex-column align-items-center">
                     <h3 class="mb-5">Оформление заказа</h3>
                         <div class="form-group w-100">
@@ -176,35 +166,10 @@
                 </div>
             </form>
         </div>
-        {{-- <!-- @else --> --}}
-            <!-- <div class="empty-cart border-2 rounded-3 py-3 px-3">
-                <div class="card-body d-flex justify-content-between">
-                    <h3 class="card-title">Корзина пуста</h3>
-                    <a href="{{ route('home') }}" class="btn btn-success">В каталог</a>
-                </div>
-            </div> -->
-        {{-- <!-- @endif  --> --}}
     </main>
     <hr>
     <x-footer/>
     <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
-    <script>
-        $("#address").suggestions({
-            token: "b1fd6c9aee617244fe2e0e93a23ef9d28c72613d",
-            type: "ADDRESS",
-            onSelect: function(suggestion) {
-            }
-        });
-    </script>
-    <script>
-        function toggleRequired(radio) {
-          const addressInput = document.querySelector('#address');
-          if (radio.checked && radio.classList.contains('toggl')) {
-            addressInput.required = true;
-          } else {
-            addressInput.required = false;
-          }
-        }
-    </script>
+    <x-scriptsOrder/>
     <x-scripts/>
 </body>

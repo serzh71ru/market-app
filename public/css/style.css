@@ -1,6 +1,22 @@
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Hw9aXpsog.woff2) format('woff2');
+}
+
+/* * {
+    font-family: 'Montserrat';
+} */
+
 .page {
     min-height: 100vh;
     margin: 0 auto;
+}
+
+.copyright{
+    background: #f5f9fa;
 }
 
 .nav {
@@ -160,12 +176,38 @@
     object-fit: cover;
 }
 
-.orders-main{
+.orders-main, .delivery-container{
     margin-top: 70px;
 }
 
+.delivery-map{
+    position: relative;
+}
 
+/* .delivery-info{
+    position: absolute;
+    top: 0;
+    right: 70px;
+    background: #fff;
+    max-width: 350px;
+} */
 
+.delivery-info li::before{
+    font-size: 20px;
+    color: #38b49c; 
+    content: '\2022'; 
+    padding-right: 8px; 
+}
+
+@media screen and (min-width: 992px){
+    .delivery-info{
+        position: absolute;
+        top: 0;
+        right: 70px;
+        background: #fff;
+        max-width: 350px;
+        }
+}
 @media screen and (min-width: 767px){
     .pr-descript{
         width: 50%;
