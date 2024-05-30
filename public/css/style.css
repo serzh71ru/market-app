@@ -81,7 +81,7 @@
 }
 
 .carousel-item img {
-    max-height: 562px;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -198,6 +198,32 @@
     content: '\2022'; 
     padding-right: 8px; 
 }
+
+/* .dropdown-menu {
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(-10px);
+    opacity: 0;
+}
+
+.dropdown.show .dropdown-menu {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.dropdown-menu {
+    animation: slideDown 0.5s forwards;
+  }
+  
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+} */
 
 @media screen and (min-width: 992px){
     .delivery-info{

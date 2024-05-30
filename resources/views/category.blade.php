@@ -70,7 +70,7 @@
                         <div class="card-quantity d-none"></div>
                     </div>
                 @endforeach 
-                <div class="cart-total"></div>
+                <div class="cart-total d-none"></div>
             </div>
         </div>
     </main>

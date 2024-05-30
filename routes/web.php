@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Product;
@@ -60,3 +61,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::post('sendFeedback', [FeedbackController::class, 'send']);
+
+Route::match(['GET', 'POST'], '/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+Route::post ('/payment/create', [PaymentController::class, 'create'])->name('payment.create');
+Route::get ('/payments', [PaymentController::class, 'index'])->name('payment.index');
