@@ -11,7 +11,8 @@ use Mail;
 
 class OrderController extends Controller
 {
-    public function sendOrder(Request $request) {
+    public static function sendOrder(Request $request) {
+        // $order = $request->all();
         $knownKeys = ['_token', 'variant', 'unitValue', 'unitName', 'email', 'phone', 'address', 'address_val', 'info_adress', 'info', 'user_name', 'user_id', 'address_name', 'sum'];
         $productData = json_encode($request->except($knownKeys));
         $userName = $request->user_name;
@@ -46,6 +47,8 @@ class OrderController extends Controller
                 'products' => $productData,
                 'sum' => $sum,
             ]);
+            $request->session()->forget('basket');
+            return $order;
         } else {
             $unregOrder = UnregOrder::create([
                 'user_name' => $userName,
@@ -57,13 +60,15 @@ class OrderController extends Controller
                 'products' => $productData,
                 'sum' => $sum,
             ]);
+            $request->session()->forget('basket');
+            return $unregOrder;
         }
         Mail::send(['text' => 'mails.orderMail'], ['name' => 'Market App', 'userName' => $userName, 'userEmail' => $userEmail, 'userPhone' => $userPhone, 'variant' => $variant, 'address' => $adres, 'addressInfo' => $addressInfo, 'comment' => $comment, 'products' => $products, 'productUnits' => $productUnits, 'sum' =>$sum], function($message){
             $message->to('serzhik.kiselev.1998@gmail.com', 'Менеджеру')->subject('Новый заказ');
             $message->from('market.app.laravel@yandex.ru', 'Market app');
         });
-        $request->session()->forget('basket');
-        return view('order');
+        // return view('order');
+        
         
     } 
 

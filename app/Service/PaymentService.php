@@ -21,11 +21,14 @@ class PaymentService {
             'capture' => true,
             'confirmation' => [
                 'type' => 'redirect',
-                'return_url' => route('payment.index')
+                'return_url' => route('order.success')
             ],
             'description' => $description,
             'metadata' => [
-                'transaction_id' => $options['transaction_id']
+                'transaction_id' => $options['transaction_id'],
+                'user_name' => $options['user_name'],
+                'order_id' => $options['order_id'],
+                'order_type' => $options['order_type']
             ]
         ], uniqid('', true));
 

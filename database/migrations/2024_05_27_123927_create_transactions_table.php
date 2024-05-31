@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->decimal('amount', 10, 2)->default(0);
             $table->string('description');
+            $table->integer('order_id')->nullable();
+            $table->integer('unreg_order_id')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->string('user_name');
+            $table->string('order_type');
             $table->enum('status', ['CREATED', 'FAILED', 'CONFIRMED'])->default('CREATED');
             $table->timestamps();
         });

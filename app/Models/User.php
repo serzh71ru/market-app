@@ -5,9 +5,11 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Address;
+use App\Models\Order;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends \TCG\Voyager\Models\User
@@ -22,6 +24,10 @@ class User extends \TCG\Voyager\Models\User
     public function addresses()
     {
         return $this->HasMany(Address::class);
+    }
+    public function orders()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     protected $fillable = [

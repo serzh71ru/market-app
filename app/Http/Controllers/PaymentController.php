@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service\PaymentService;
 use App\Models\Transaction;
+use App\Models\Order;
+use App\Models\UnregOrder;
 use YooKassa\Model\Notification\NotificationEventType;
 use YooKassa\Model\Notification\NotificationSucceeded;
 use YooKassa\Model\Notification\NotificationWaitingForCapture;
@@ -17,16 +19,46 @@ class PaymentController extends Controller
     }
 
     public function create(Request $request, PaymentService $service){
-        $amount = (float)$request->input('amount');
-        $description = $request->input('description');
+        $order = OrderController::sendOrder($request);
+        if($order instanceof Order){
+            // dd($order->user);
+            $userName = $order->user->name;
+            $orderType = "order";
+        } elseif($order instanceof UnregOrder){
+            $userName = $order->user_name;
+            $orderType = "unregOrder";
+        }
+        // dd($order);
+        $amount = (float)$order->sum;
+        $description = "Оплата заказа №" . $order->id . "от" . $order->created_at;
 
-        $transaction = Transaction::create([
-            'amount' => $amount,
-            'description' => $description
-        ]);
+        if($orderType === 'order'){
+            $transaction = Transaction::create([
+                'amount' => $amount,
+                'description' => $description,
+                'order_id' => $order->id,
+                'user_id' => $order->user->id,
+                'user_name' => $order->user->name,
+                'order_type' => $orderType
+            ]);
+        }elseif($orderType === 'unregOrder'){
+            $transaction = Transaction::create([
+                'amount' => $amount,
+                'description' => $description,
+                'unreg_order_id' => $order->id,
+                'user_name' => $userName,
+                'order_type' => $orderType
+            ]);
+        }
+        
 
         if($transaction){
-            $link = $service->createPayment($amount, $description, ['transaction_id' => $transaction->id]);
+            $link = $service->createPayment($amount, $description, [
+                'transaction_id' => $transaction->id,
+                'user_name' => $userName,
+                'order_id' => $order->id,
+                'order_type' => $orderType
+            ]);
 
             return redirect()->away($link);
         }
@@ -55,12 +87,6 @@ class PaymentController extends Controller
                     $transaction = Transaction::find($transactionId);
                     $transaction->status = 'CONFIRMED';
                     $transaction->save();
-        
-                    if(cache()->has('amount')){
-                        cache()->forever('balance', (float)cache()->get('balance') + (float)$payment->amount->value);
-                    }else{
-                        cache()->forever('balance', (float)$payment->amount->value);
-                    }
                 }
             }
         }

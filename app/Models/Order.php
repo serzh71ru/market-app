@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -17,4 +20,9 @@ class Order extends Model
         'products',
         'sum',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

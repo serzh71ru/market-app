@@ -16,7 +16,6 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-Route::post('/order', [OrderController::class, 'sendOrder'])->name('order');
 Route::get('/orders', [OrderController::class, 'ordersStory'])->name('order_story');
 
 Route::get('/', [BannerController::class, 'index'])->name('home');
@@ -63,5 +62,9 @@ Route::group(['prefix' => 'admin'], function () {
 Route::post('sendFeedback', [FeedbackController::class, 'send']);
 
 Route::match(['GET', 'POST'], '/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-Route::post ('/payment/create', [PaymentController::class, 'create'])->name('payment.create');
-Route::get ('/payments', [PaymentController::class, 'index'])->name('payment.index');
+Route::post('/order', [PaymentController::class, 'create'])->name('payment.create');
+Route::get('/order/success', function(){
+    return view('order');
+})->name('order.success');
+// Route::post ('/payment/create', [PaymentController::class, 'create'])->name('payment.create');
+// Route::get ('/payments', [PaymentController::class, 'index'])->name('payment.index');

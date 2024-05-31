@@ -10,7 +10,7 @@
     <main class="cart-main pt-5">
         <div class="container"></div>
         <div class="form">
-            <form action="/order" method="POST" class="order-form mb-5 container">
+            <form action="{{ route('payment.create') }}" method="POST" class="order-form mb-5 container">
             @csrf
                 <div class="container">
                     @if (isset($basket))

@@ -11,7 +11,13 @@ class Transaction extends Model
 
     protected $fillable = [
         'amount',
-        'description'
+        'description',
+        'order_id',
+        'unreg_order_id',
+        'user_name',
+        'user-id',
+        'order_type',
+        'status'
     ];
 }
 
