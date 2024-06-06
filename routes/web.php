@@ -48,7 +48,7 @@ Route::get('/delivery', function(){
 Route::get('/product/{slug}', [ProductController::class, 'index'])->name('product');
 
 Route::get('/basket', [CartController::class,'getBasket'])->name('cart');
-Route::get('/basket/{id}', [CartController::class,'repeatOrder'])->name('repeatOrder');
+Route::post('/basket/repeat', [CartController::class,'repeatOrder'])->name('repeatOrder');
 Route::post('/setsession', [CartController::class,'setSession'])->name('set');
 Route::get('/getsession', [CartController::class,'getsession'])->name('get');
 Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
@@ -66,5 +66,5 @@ Route::post('/order', [PaymentController::class, 'create'])->name('payment.creat
 Route::get('/order/success', function(){
     return view('order');
 })->name('order.success');
-// Route::post ('/payment/create', [PaymentController::class, 'create'])->name('payment.create');
-// Route::get ('/payments', [PaymentController::class, 'index'])->name('payment.index');
+Route::get('/confirmation/orders', [OrderController::class, 'confirmationOrders'])->name('orders.confirmation');
+Route::post('/confirmation/order', [OrderController::class, 'orderConfirm'])->name('order.confirm');

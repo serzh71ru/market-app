@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Address;
 use App\Models\Order;
 use Laravel\Sanctum\HasApiTokens;
+use TCG\Voyager\Models\Role;
 
 class User extends \TCG\Voyager\Models\User
 {
@@ -25,9 +26,13 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->HasMany(Address::class);
     }
-    public function orders()
+    public function orders() :HasMany
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Order::class);
+    }
+    public function roles() :HasOne
+    {
+        return $this->hasOne(Role::class);
     }
 
     protected $fillable = [

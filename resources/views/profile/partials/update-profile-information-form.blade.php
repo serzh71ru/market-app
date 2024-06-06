@@ -48,7 +48,7 @@
         </div>
         <div>
             <x-input-label for="phone" :value="__('Телефон')" />
-            <x-text-input id="phone" name="phone" type="tel" class="form-control mt-1 block w-full" :value="old('phone', $user->phone)" autocomplete="username" />
+            <x-text-input id="phone" name="phone" type="tel" class="form-control mt-1 block w-full phone-mask" :value="old('phone', $user->phone)" autocomplete="username" />
         </div>
 
         <div class="flex items-center gap-4">
@@ -65,26 +65,4 @@
             @endif
         </div>
     </form>
-    {{-- <h2>My Addresses</h2>
-    <ul id="addresses">
-        @foreach ($addresses as $address)
-            <li>
-                <input type="text" class="form-control" value="{{ $address->address }}" disabled>
-                <form action="{{ route('addresses.destroy', $address->id) }}" method="post" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-link text-danger">Delete</button>
-                </form>
-                <button class="btn btn-link text-primary edit-address">Edit</button>
-            </li>
-        @endforeach
-    </ul>
-    <form action="{{ route('addresses.store') }}" method="post">
-        @csrf
-        <div class="form-group">
-            <label for="address">Адрес</label>
-            <input type="text" class="form-control" id="address" name="address" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Address</button>
-    </form> --}}
 </section>

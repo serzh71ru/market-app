@@ -1,4 +1,3 @@
-{{-- <x-guest-layout> --}}
     <x-head>
         <x-slot:title>
             Регистрация
@@ -30,8 +29,8 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
                 <div class="mt-4">
-                    <x-input-label for="phone" :value="__('Номер телефона без 8')" />
-                    <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" required autocomplete="username" placeholder="9531234567" />
+                    <x-input-label for="phone" :value="__('Номер телефона')" />
+                    <x-text-input id="phone" class="block mt-1 w-full phone-mask" type="tel" name="phone" :value="old('phone')" required autocomplete="username" />
                     <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                 </div>
         
@@ -69,7 +68,28 @@
                 </div>
             </form>
         </div>
-        
+        <script src="{{ asset('js/maska-nomera.js') }}" type="text/javascript" ></script>
+
+        <script>
+            $('.phone-mask').mask('+7 (999) 999-99-99');
+
+            $.fn.setCursorPosition = function(pos) {
+            if ($(this).get(0).setSelectionRange) {
+                $(this).get(0).setSelectionRange(pos, pos);
+            } else if ($(this).get(0).createTextRange) {
+                var range = $(this).get(0).createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+            }
+            };
+
+
+            $('input[type="tel"]').click(function(){
+                $(this).setCursorPosition(4);  // set position number
+            });
+        </script>
     </body>
     
-{{-- </x-guest-layout> --}}
+

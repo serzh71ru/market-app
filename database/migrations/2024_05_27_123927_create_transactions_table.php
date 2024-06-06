@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('user_id')->nullable();
             $table->string('user_name');
             $table->string('order_type');
+            $table->string('payment_id')->default(0);
             $table->enum('status', ['CREATED', 'FAILED', 'CONFIRMED'])->default('CREATED');
             $table->timestamps();
         });

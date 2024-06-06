@@ -42,8 +42,24 @@
             <x-footer/>
         </footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
+        <script src="{{ asset('js/maska-nomera.js') }}" type="text/javascript" ></script>
 
+        <script>
+            $('.phone-mask').mask('+7 (999) 999-99-99');
+
+            $.fn.setCursorPosition = function(pos) {
+            if ($(this).get(0).setSelectionRange) {
+                $(this).get(0).setSelectionRange(pos, pos);
+            } else if ($(this).get(0).createTextRange) {
+                var range = $(this).get(0).createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+            }
+            };
+        </script>
         <script>
             $("#address").suggestions({
                 token: "b1fd6c9aee617244fe2e0e93a23ef9d28c72613d",

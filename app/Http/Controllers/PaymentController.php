@@ -13,24 +13,17 @@ use YooKassa\Model\Notification\NotificationWaitingForCapture;
 
 class PaymentController extends Controller
 {
-    public function index(PaymentService $service){
-        $transactions = Transaction::all();
-        return view('payments.index', ['transactions' => $transactions]);
-    }
-
     public function create(Request $request, PaymentService $service){
         $order = OrderController::sendOrder($request);
         if($order instanceof Order){
-            // dd($order->user);
             $userName = $order->user->name;
             $orderType = "order";
         } elseif($order instanceof UnregOrder){
             $userName = $order->user_name;
             $orderType = "unregOrder";
         }
-        // dd($order);
         $amount = (float)$order->sum;
-        $description = "Оплата заказа №" . $order->id . "от" . $order->created_at;
+        $description = "Оплата заказа № " . $order->id . " от " . $order->created_at;
 
         if($orderType === 'order'){
             $transaction = Transaction::create([
@@ -64,7 +57,7 @@ class PaymentController extends Controller
         }
     }
 
-    public function callback(Request $request, PaymentService $service){
+    protected function callback(PaymentService $service){
         $source = file_get_contents('php://input');
         
         $requestBody = json_decode($source, true);
@@ -86,6 +79,7 @@ class PaymentController extends Controller
                     $transactionId = (int)$metadata->transaction_id;
                     $transaction = Transaction::find($transactionId);
                     $transaction->status = 'CONFIRMED';
+                    $transaction->payment_id = $payment->id;
                     $transaction->save();
                 }
             }

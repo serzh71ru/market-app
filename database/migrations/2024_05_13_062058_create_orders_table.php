@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->text('products');
             $table->integer('sum');
+            $table->enum('status', ['Создан', 'Оплачен', 'Подтвержден', 'Выполнен'])->default('Создан');
             $table->timestamps();
         });
     }

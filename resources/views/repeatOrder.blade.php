@@ -160,9 +160,26 @@
                                 <textarea name="info" id="info" placeholder="например: позвонить по приезду" class="form-control"></textarea>
                             </div>
                             <div class="submit mt-3 w-100 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-outline-primary">Оформить заказ</button>
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Оформить заказ</button>
                             </div>
                         </div>
+                </div>
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Внимание!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>В процессе сборки заказа возможно отклонение по весу в меньшую сторону. При оплате онлайн, разница будет возвращена автоматически.</p>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-primary">Продолжить</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

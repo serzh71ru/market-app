@@ -5,7 +5,7 @@ namespace App\Service;
 use YooKassa\Client;
 
 class PaymentService {
-    public function getClient(): Client{
+    protected function getClient(): Client{
         $client = new Client();
         $client->setAuth(config('services.yookassa.shop_id'), config('services.yookassa.secret_key'));
         return $client;
@@ -24,6 +24,7 @@ class PaymentService {
                 'return_url' => route('order.success')
             ],
             'description' => $description,
+            "refundable" => true,
             'metadata' => [
                 'transaction_id' => $options['transaction_id'],
                 'user_name' => $options['user_name'],
@@ -33,6 +34,24 @@ class PaymentService {
         ], uniqid('', true));
 
         return $payment->getConfirmation()->getConfirmationUrl();
+    }
+
+    public static function refundCreate($paymentId, $refundSum){
+        $client = new Client();
+        $client->setAuth(config('services.yookassa.shop_id'), config('services.yookassa.secret_key'));
+        $idempotenceKey = uniqid('', true);
+        // dd($paymentId);
+        $response = $client->createRefund(
+            array(
+                'payment_id' => $paymentId,
+                'amount' => array(
+                    'value' => $refundSum,
+                    'currency' => 'RUB',
+                ),
+            ),
+            $idempotenceKey
+        );
+        dd($response);
     }
 
 }

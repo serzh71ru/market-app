@@ -7,12 +7,12 @@ use App\Models\Order;
 use App\Models\UnregOrder;
 use App\Models\User;
 use App\Models\Product;
+use App\Service\PaymentService;
 use Mail;
 
 class OrderController extends Controller
 {
     public static function sendOrder(Request $request) {
-        // $order = $request->all();
         $knownKeys = ['_token', 'variant', 'unitValue', 'unitName', 'email', 'phone', 'address', 'address_val', 'info_adress', 'info', 'user_name', 'user_id', 'address_name', 'sum'];
         $productData = json_encode($request->except($knownKeys));
         $userName = $request->user_name;
@@ -66,27 +66,117 @@ class OrderController extends Controller
         Mail::send(['text' => 'mails.orderMail'], ['name' => 'Market App', 'userName' => $userName, 'userEmail' => $userEmail, 'userPhone' => $userPhone, 'variant' => $variant, 'address' => $adres, 'addressInfo' => $addressInfo, 'comment' => $comment, 'products' => $products, 'productUnits' => $productUnits, 'sum' =>$sum], function($message){
             $message->to('serzhik.kiselev.1998@gmail.com', 'Менеджеру')->subject('Новый заказ');
             $message->from('market.app.laravel@yandex.ru', 'Market app');
-        });
-        // return view('order');
-        
-        
+        });      
     } 
 
-    public function ordersStory(Request $request){
+    public function ordersStory(){
         $orders = Order::where('user_id', auth()->user()->id)->orderByDesc('created_at')->get();
         foreach ($orders as $order){
             $order->products = (array) json_decode($order->products);
             $productModels = Product::find(array_keys($order->products));
             $products = [];
             for($i = 0; $i < count($productModels); $i++){
-                $keys = array_keys($order->products);
                 $values = array_values($order->products);
                 $productModels[$i]->quantity = $values[$i];
                 $products[] = $productModels[$i];
             }
             $order->products = $products;
+            
         }
         session(['orders' => $orders]);
         return view('orders', ['orders' => $orders]);
+    }
+
+    protected function confirmationOrders(){
+        if(auth()->user() !== null && auth()->user()->role->id === 1){
+            $unregOrders = UnregOrder::all();
+            $regOrders = Order::all();
+            $orders = $regOrders->mergeRecursive($unregOrders)->sortByDesc('created_at');
+            foreach ($orders as $order){
+                $order->products = (array) json_decode($order->products);
+                $productModels = Product::find(array_keys($order->products));
+                $products = [];
+                for($i = 0; $i < count($productModels); $i++){
+                    $values = array_values($order->products);
+                    $productModels[$i]->quantity = $values[$i];
+                    $products[] = $productModels[$i];
+                }
+                $order->products = $products;
+            }
+            return view('confirmation.orders', ['orders' => $orders]);
+        } else {
+            return back();
+        }
+    }
+
+    public function orderConfirm(Request $request){
+        if($request->action === 'confirm'){
+            if($request->order_type === "App\Models\UnregOrder"){
+                $order = UnregOrder::find($request->order_id);
+            } elseif($request->order_type === "App\Models\Order"){
+                $order = Order::find($request->order_id);
+            }
+            $initialAmount = $order->sum;
+            $knownKeys = ['_token', 'order_id', 'order_type'];
+            $weightProducts = $request->except($knownKeys);
+            $order->products = (array) json_decode($order->products);
+            $productModels = Product::find(array_keys($order->products));
+            $products = [];
+            for($i = 0; $i < count($productModels); $i++){
+                $keys = array_keys($weightProducts);
+                $values = array_values($weightProducts);
+                $productModels[$i]->total_weight = $values[$i];
+                $products[] = $productModels[$i];
+            }
+            $order->products = $products;
+            $order->sum = 0;
+            foreach($order->products as $product){
+                
+                switch ($product->unit_id) {
+                    case '1':
+                        $productSum = $product->total_weight * ($product->price * 10);
+                        $order->sum += $productSum;
+                        break;
+                    case '2':
+                        $productSum = $product->total_weight * $product->price;
+                        $order->sum += $productSum;
+                        break;
+                    case '3':
+                        $productSum = $product->price;
+                        $order->sum += $productSum;
+                        break;
+                    
+                    default:
+                        echo('ОШИБКА: НЕИЗВЕСТНЫЕ ДАННЫЕ');
+                        break;
+                }
+                
+            }
+            $finalAmount = $order->sum;
+            $refundSum = $initialAmount - $finalAmount;
+            // dd($initialAmount, $finalAmount, $refundSum);
+            $paymentId = $order->transaction->payment_id;
+            // dd($paymentId);
+            PaymentService::refundCreate($paymentId, $refundSum);
+            $keys = [];
+            $values = [];
+            foreach($order->products as $product){
+                array_push($keys, $product->id);
+                array_push($values, $product->total_weight);
+            }
+            $order->products = json_encode(array_combine($keys, $values));
+            $order->status = 'Подтвержден';
+            $order->save();
+            return back();
+        } elseif($request->action === 'complete'){
+            if($request->order_type === "App\Models\UnregOrder"){
+                $order = UnregOrder::find($request->order_id);
+            } elseif($request->order_type === "App\Models\Order"){
+                $order = Order::find($request->order_id);
+            }
+            $order->status = 'Выполнен';
+            $order->save();
+            return back();
+        }
     }
 }

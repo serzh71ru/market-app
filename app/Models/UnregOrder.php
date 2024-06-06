@@ -19,4 +19,9 @@ class UnregOrder extends Model
         'products',
         'sum',
     ];
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
 }
