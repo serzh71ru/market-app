@@ -1,18 +1,18 @@
 <x-head>
     <x-slot:title>
-    История заказов
+    Модерация заказов
     </x-slot>
 </x-head>
 <body>
     <header>
-        <x-navbar/>
+        
     </header>
     <main class="orders-main">
         @php
             use Illuminate\Support\Carbon;
             Carbon::setLocale('ru');
         @endphp
-        <h3 class="py-5 ms-5 text-center">Ваши заказы:</h3>
+        <h3 class="py-5 ms-5 text-center">Список заказов:</h3>
         <div class="container">
             @foreach ($orders as $order)
             <form method="POST" action="{{ route('order.confirm') }}">
@@ -37,7 +37,9 @@
                     <div class="row mt-3">
                         <h5>Товары в заказе:</h5>
                     </div>
-                    
+                    @php
+                        $orderSum = 0;
+                    @endphp
                     @foreach ($order->products as $product)
                         <div class=" w-100 card border-0 d-block d-md-flex flex-md-row text-decoration-none col-12 col-md-3 col-xl-2 my-2 justify-content-between align-items-center" data-id='{{$product->id}}'>
                             <h4 class="card-title">{{ $product->name }}</h4>
@@ -73,16 +75,21 @@
                                     @endphp 
                                     <input type="number" step="0.001" class="form-control" name="weight_product_{{ $product->id }}" value="{{ $unit }}" @if ($order->status === 'Подтвержден' || $order->status === 'Выполнен')
                                         readonly="readonly"
-                                    @endif></input>
+                                    @endif/>
                                     <h6 class="mt-2 ms-2">{{ ($product->unit->name == 'г') ? 'кг' : $product->unit->name }}</h6>
                                 </div>
-                                <h4><span class="card-quantity">{{ $productSum }}</span>Р</h4>
+                                <h4 class="mb-0"><span class="card-quantity">{{ $productSum }}</span>Р</h4>
+                                @php
+                                    $orderSum += $productSum;
+                                @endphp
+                                <a href="{{ route('confirmation.refresh', ['product_id' => $product->id, 'order_id' => $order->id, 'order_type' => $order->getMorphClass()]) }}" class="refresh ms-2" title="Заменить товар"><img src="{{ asset('images/refresh.jpg') }}" alt="refresh"></a>
+                                <a href="{{ route('confirmation.product.delete', ['product_id' => $product->id, 'order_id' => $order->id, 'order_type' => $order->getMorphClass()]) }}" class="refresh ms-2" title="Удалить товар"><img src="{{ asset('images/delete.webp') }}" alt="refresh"></a>
                             </div>
                         </div>
                         <hr class="d-md-none">  
                     @endforeach
                     <div class="row mt-3">
-                        <h5>Сумма заказа: {{ $order->sum }}р</h5>
+                        <h5>Сумма заказа: {{ $orderSum }}р</h5>
                     </div>
                     <hr>
                     <div class="row mt-3">
@@ -110,6 +117,9 @@
             @endforeach
         </div>
     </main>
-    <x-footer/>
+
+    <script>
+        
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

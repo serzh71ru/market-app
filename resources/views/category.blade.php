@@ -74,6 +74,7 @@
             </div>
         </div>
     </main>
+    <a href="{{ route('cart') }}" class="btn btn-success fixed-btn">К оформлению</a>
     <hr>
     <x-footer/>
     <x-scripts/>

@@ -46,6 +46,9 @@ Route::get('/delivery', function(){
 })->name('delivery');
 
 Route::get('/product/{slug}', [ProductController::class, 'index'])->name('product');
+Route::get('/refresh/{order_type}/{order_id}/{product_id}', [CategoryController::class, 'refresh'])->name('confirmation.refresh');
+Route::get('/delete/{order_type}/{order_id}/{product_id}', [OrderController::class, 'deleteProduct'])->name('confirmation.product.delete');
+Route::post('/confirmation/orders', [OrderController::class, 'refresh'])->name('refresh.confirm');
 
 Route::get('/basket', [CartController::class,'getBasket'])->name('cart');
 Route::post('/basket/repeat', [CartController::class,'repeatOrder'])->name('repeatOrder');
