@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Address;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Sanctum\HasApiTokens;
 use TCG\Voyager\Models\Role;
 
@@ -30,9 +31,9 @@ class User extends \TCG\Voyager\Models\User
     {
         return $this->hasMany(Order::class);
     }
-    public function roles() :HasOne
+    public function roles() :BelongsTo
     {
-        return $this->hasOne(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
     protected $fillable = [

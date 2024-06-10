@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\UnregOrder;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Service\PaymentService;
 use Mail;
 
@@ -93,6 +94,10 @@ class OrderController extends Controller
             $regOrders = Order::all();
             $orders = $regOrders->mergeRecursive($unregOrders)->sortByDesc('created_at');
             foreach ($orders as $order){
+                if($order->transaction->status === 'CONFIRMED'){
+                    $order->status = 'Оплачен';
+                    $order->save();
+                }
                 $order->products = (array) json_decode($order->products);
                 $productModels = Product::find(array_keys($order->products));
                 $products = [];
