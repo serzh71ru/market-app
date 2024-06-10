@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\Auth\RegisteredCompanyController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BannerController;
@@ -27,6 +28,12 @@ Route::get('/promotion', [PromoteController::class, 'show'])->name('promote');
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+
+Route::get('register/company', function () {
+    return view('auth.registerCompany');
+})->name('register.company');
+
+Route::post('register/company', [RegisteredCompanyController::class, 'store'])->name('register.comp');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
